@@ -21,7 +21,9 @@ public class Seance {
 	@Id
 	private String id;
 	
+	@DBRef
 	private Film film;
+	
 	private LocalDateTime date;
 	
 	@DBRef

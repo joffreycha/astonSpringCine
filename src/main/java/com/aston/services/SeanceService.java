@@ -16,6 +16,6 @@ public interface SeanceService {
 	public Seance update(Seance s);
 	public void deleteById(String id);
 	
-	public Client addClient(String sId, String cId);
+	public Seance addClient(String sId, String cId);
 
 }

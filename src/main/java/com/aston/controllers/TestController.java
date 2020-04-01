@@ -1,5 +1,7 @@
 package com.aston.controllers;
 
+import java.time.LocalDateTime;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,6 @@ public class TestController {
 
 	@GetMapping("")
 	public String get() {
-		return "test du GET";
+		return "test du GET " + LocalDateTime.now();
 	}
 }

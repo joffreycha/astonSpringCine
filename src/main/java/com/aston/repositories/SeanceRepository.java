@@ -6,4 +6,5 @@ import com.aston.models.Seance;
 
 public interface SeanceRepository extends MongoRepository<Seance, String> {
 
+	
 }

@@ -49,4 +49,10 @@ public class SeanceController {
 	public void deleteById(@PathVariable String id) {
 		this.seanceService.deleteById(id);
 	}
+	
+	
+	@PutMapping("{sId}/clients/{cId}")
+	public Seance addClient(@PathVariable String sId, @PathVariable String cId) {
+		return this.seanceService.addClient(sId, cId);
+	}
 }

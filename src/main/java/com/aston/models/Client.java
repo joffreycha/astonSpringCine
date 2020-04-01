@@ -19,7 +19,7 @@ public class Client {
 	private String id;
 	
 	private String nom;
-	private boolean etudient;
+	private boolean etudiant;
 	private LocalDate naissance;
 
 }
