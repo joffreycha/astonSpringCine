@@ -32,7 +32,7 @@ public class FilmServiceImpl implements FilmService {
 	public Optional<Film> findById(String id) {
 		Optional<Film> f  = this.filmRepository.findById(id);
 		if (!f.isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, "Le film avec l'id " + id + " n'a pas été trouvé");
+			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Film.class.getName());
 		return f;
 	}
 
@@ -43,9 +43,8 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public void deleteById(String id) {
-		// TODO not found
 		if (!this.filmRepository.findById(id).isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, "Le film avec l'id " + id + " n'a pas été trouvé");
+			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Film.class.getName());
 		this.filmRepository.deleteById(id);
 	}
 

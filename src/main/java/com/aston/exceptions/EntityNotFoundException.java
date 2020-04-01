@@ -8,8 +8,8 @@ public class EntityNotFoundException extends ResponseStatusException {
 
 	private static final long serialVersionUID = 1L;
 
-	public EntityNotFoundException(HttpStatus statusCode, String statusText) {
-		super(statusCode, statusText);
+	public EntityNotFoundException(HttpStatus statusCode, String id, String classe) {
+		super(statusCode, "L'id " + id + " n'a pas été trouvé dans la collection " + classe);
 	}
 
 }

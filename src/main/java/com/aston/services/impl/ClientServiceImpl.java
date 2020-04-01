@@ -32,7 +32,7 @@ public class ClientServiceImpl implements ClientService {
 	public Optional<Client> findById(String id) {
 		Optional<Client> c = this.clientRepository.findById(id);
 		if (!c.isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, "Le client avec l'id " + id + " n'a pas été trouvé");
+			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Client.class.getName());
 		return c;
 	}
 
@@ -44,7 +44,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public void deleteById(String id) {
 		if (!this.clientRepository.findById(id).isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, "Le client avec l'id " + id + " n'a pas été trouvé");
+			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Client.class.getName());
 		this.clientRepository.deleteById(id);
 	}
 
