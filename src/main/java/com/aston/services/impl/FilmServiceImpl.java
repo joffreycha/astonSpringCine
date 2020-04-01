@@ -8,15 +8,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.aston.exceptions.EntityNotFoundException;
+import com.aston.models.Assister;
+import com.aston.models.Client;
 import com.aston.models.Film;
+import com.aston.models.Seance;
 import com.aston.repositories.FilmRepository;
 import com.aston.services.FilmService;
+import com.aston.services.SeanceService;
 
 @Service
 public class FilmServiceImpl implements FilmService {
 
 	@Autowired
 	private FilmRepository filmRepository;
+	
+	@Autowired
+	private SeanceService seanceService;
 	
 	@Override
 	public Film save(Film f) {
@@ -46,6 +53,25 @@ public class FilmServiceImpl implements FilmService {
 		if (!this.filmRepository.findById(id).isPresent())
 			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Film.class.getName());
 		this.filmRepository.deleteById(id);
+	}
+
+	@Override
+	public int getRecette(String id) {
+		// TODO combien a rapporté un film
+		float prix = 0;
+		Optional<Film> optF = this.findById(id);
+		if (!optF.isPresent())
+			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Film.class.getName());
+		else {
+			List<Seance> seances = this.seanceService.findAllByFilm(optF.get());
+			for (Seance s: seances) {
+				List<Assister> clients = s.getClients();
+				for (Assister c: clients) {
+					prix += c.getPrix();
+				}
+			}
+		}
+		return Math.round(prix);
 	}
 
 }

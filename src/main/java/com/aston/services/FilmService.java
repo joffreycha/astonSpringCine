@@ -12,4 +12,6 @@ public interface FilmService {
 	public Optional<Film> findById(String id);
 	public Film update(Film f);
 	public void deleteById(String id);
+	
+	public int getRecette(String id);
 }

@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.aston.exceptions.EntityNotFoundException;
+import com.aston.models.Assister;
 import com.aston.models.Client;
+import com.aston.models.Film;
 import com.aston.models.Seance;
 import com.aston.repositories.ClientRepository;
 import com.aston.repositories.SeanceRepository;
@@ -55,7 +57,6 @@ public class SeanceServiceImpl implements SeanceService {
 
 	@Override
 	public Seance addClient(String sId, String cId) {
-		// TODO Auto-generated method stub
 		Optional<Seance> optS = this.seanceRepository.findById(sId);
 		if (!optS.isPresent())
 			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, sId, Seance.class.getName());
@@ -65,10 +66,17 @@ public class SeanceServiceImpl implements SeanceService {
 				throw new EntityNotFoundException(HttpStatus.NOT_FOUND, cId, Client.class.getName());
 			else {
 				Seance s = optS.get();
-				s.getClients().add(c.get());
+				// TODO mettre le bon prix en fonction du client
+				s.getClients().add(new Assister(10, c.get()));
 				return this.seanceRepository.save(s);
 			}
 		}
+	}
+
+	@Override
+	public List<Seance> findAllByFilm(Film f) {
+		// TODO Auto-generated method stub
+		return this.seanceRepository.findAllByFilm(f);
 	}
 
 }

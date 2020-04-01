@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Assister {
 
-	private float prix;
+	private float prix = 10;
 	
 	@DBRef
 	private Client client;

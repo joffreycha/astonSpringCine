@@ -49,4 +49,10 @@ public class FilmController {
 	public void deleteById(@PathVariable String id) {
 		this.filmService.deleteById(id);
 	}
+	
+	// combien a rapporté un film
+	@GetMapping("{id}/recette")
+	public int getRecette(@PathVariable String id) {
+		return this.filmService.getRecette(id);
+	}
 }

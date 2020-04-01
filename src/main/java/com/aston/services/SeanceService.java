@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.aston.models.Client;
+import com.aston.models.Film;
 import com.aston.models.Seance;
 
 public interface SeanceService {
@@ -17,5 +18,6 @@ public interface SeanceService {
 	public void deleteById(String id);
 	
 	public Seance addClient(String sId, String cId);
+	public List<Seance> findAllByFilm(Film f);
 
 }
