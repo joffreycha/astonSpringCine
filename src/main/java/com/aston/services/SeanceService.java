@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.aston.models.Client;
 import com.aston.models.Seance;
 
-@Service
 public interface SeanceService {
 	
 	public Seance save(Seance s);
@@ -15,5 +15,7 @@ public interface SeanceService {
 	public Optional<Seance> findById(String id);
 	public Seance update(Seance s);
 	public void deleteById(String id);
+	
+	public Client addClient(String sId, String cId);
 
 }
