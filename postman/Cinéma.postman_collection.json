@@ -1,0 +1,375 @@
+{
+	"info": {
+		"_postman_id": "b1ef2561-d339-4a70-966c-ff803f10e201",
+		"name": "Cinéma",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Séances",
+			"item": [
+				{
+					"name": "save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"film\": \n\t\t{\n\t\t\t\"id\": \"5e84875b301cd67f52db0238\"\n\t\t},\n\t\"date\": \"2015-10-28T21:00:00.000\",\n\t\"type\": \"2D\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/seances",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"seances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/seances",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"seances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/seances/5e848ecf02898418eaceaf48",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"seances",
+								"5e848ecf02898418eaceaf48"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/seances",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"seances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/seances/5e848e87b98ce251c09ec054",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"seances",
+								"5e848e87b98ce251c09ec054"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nom\": \"Michel\",\r\n    \"etudiant\": false,\r\n    \"naissance\": \"1966-05-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/clients",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/clients",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/clients/5e848c193e85821810da12d2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients",
+								"5e848c193e85821810da12d2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"5e848c193e85821810da12d2\",\r\n    \"nom\": \"Michel\",\r\n    \"etudiant\": false,\r\n    \"naissance\": \"1966-05-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/clients/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/clients/5e848c07598cd8661e0568db",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients",
+								"5e848c07598cd8661e0568db"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Films",
+			"item": [
+				{
+					"name": "save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titre\": \"La Liste de Schindler\",\r\n    \"duree\": 195,\r\n    \"genre\": \"Historique\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/films",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/films",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/films/5e84875b301cd67f52db0238",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"films",
+								"5e84875b301cd67f52db0238"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"id\": \"5e848a97598cd8661e0568d9\",\r\n    \"titre\": \"Forrest Gump\",\r\n    \"duree\": 140,\r\n    \"ageLimite\": null,\r\n    \"genre\": \"Comédie dramatique\",\r\n    \"visa\": \"86499\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/films/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"films",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/films/5e84865f301cd67f52db0236",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"films",
+								"5e84865f301cd67f52db0236"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Tests",
+			"item": [
+				{
+					"name": "get test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/tests",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tests"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
