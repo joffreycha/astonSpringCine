@@ -43,8 +43,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void deleteById(String id) {
-		if (!this.clientRepository.findById(id).isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Client.class.getName());
+		this.findById(id); // check if the id exists
 		this.clientRepository.deleteById(id);
 	}
 

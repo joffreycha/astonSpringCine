@@ -52,7 +52,7 @@ public class FilmController {
 	
 	// combien a rapporté un film
 	@GetMapping("{id}/recette")
-	public int getRecette(@PathVariable String id) {
+	public float getRecette(@PathVariable String id) {
 		return this.filmService.getRecette(id);
 	}
 }

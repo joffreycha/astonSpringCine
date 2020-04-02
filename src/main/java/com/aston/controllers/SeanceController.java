@@ -55,4 +55,12 @@ public class SeanceController {
 	public Seance addClient(@PathVariable String sId, @PathVariable String cId) {
 		return this.seanceService.addClient(sId, cId);
 	}
+	
+	// combien a rapporté une séance
+	@GetMapping("{id}/recette")
+	public float getRecette(@PathVariable String id) {
+		return this.seanceService.getRecette(id);
+	}
+	
+	
 }

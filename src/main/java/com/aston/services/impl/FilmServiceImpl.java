@@ -50,14 +50,13 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public void deleteById(String id) {
-		if (!this.filmRepository.findById(id).isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Film.class.getName());
+		this.findById(id);  // check if the id exists
 		this.filmRepository.deleteById(id);
 	}
 
 	@Override
-	public int getRecette(String id) {
-		// TODO combien a rapporté un film
+	public float getRecette(String id) {
+		// combien a rapporté un film
 		float prix = 0;
 		Optional<Film> optF = this.findById(id);
 		if (!optF.isPresent())
@@ -71,7 +70,6 @@ public class FilmServiceImpl implements FilmService {
 				}
 			}
 		}
-		return Math.round(prix);
+		return prix;
 	}
-
 }

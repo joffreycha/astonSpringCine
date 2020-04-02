@@ -20,4 +20,5 @@ public interface SeanceService {
 	public Seance addClient(String sId, String cId);
 	public List<Seance> findAllByFilm(Film f);
 
+	public float getRecette(String id);
 }

@@ -12,8 +12,8 @@ import com.aston.models.Assister;
 import com.aston.models.Client;
 import com.aston.models.Film;
 import com.aston.models.Seance;
-import com.aston.repositories.ClientRepository;
 import com.aston.repositories.SeanceRepository;
+import com.aston.services.ClientService;
 import com.aston.services.SeanceService;
 
 @Service
@@ -23,7 +23,7 @@ public class SeanceServiceImpl implements SeanceService {
 	private SeanceRepository seanceRepository;
 	
 	@Autowired
-	private ClientRepository clientRepository;
+	private ClientService clientService;
 	
 	@Override
 	public Seance save(Seance s) {
@@ -50,33 +50,47 @@ public class SeanceServiceImpl implements SeanceService {
 
 	@Override
 	public void deleteById(String id) {
-		if (!this.seanceRepository.findById(id).isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Seance.class.getName());
+		this.findById(id); // check if the id exists
 		this.seanceRepository.deleteById(id);
 	}
 
 	@Override
 	public Seance addClient(String sId, String cId) {
-		Optional<Seance> optS = this.seanceRepository.findById(sId);
+		Optional<Seance> optS = this.findById(sId);
 		if (!optS.isPresent())
 			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, sId, Seance.class.getName());
 		else {
-			Optional<Client> c = this.clientRepository.findById(cId);
+			Optional<Client> c = this.clientService.findById(cId);
 			if(!c.isPresent())
 				throw new EntityNotFoundException(HttpStatus.NOT_FOUND, cId, Client.class.getName());
 			else {
 				Seance s = optS.get();
 				// TODO mettre le bon prix en fonction du client
 				s.getClients().add(new Assister(10, c.get()));
-				return this.seanceRepository.save(s);
+				return this.update(s);
 			}
 		}
 	}
 
 	@Override
 	public List<Seance> findAllByFilm(Film f) {
-		// TODO Auto-generated method stub
 		return this.seanceRepository.findAllByFilm(f);
+	}
+
+	@Override
+	public float getRecette(String id) {
+		// combien a rapporté une séance
+		float prix = 0;
+		Optional<Seance> optS = this.findById(id);
+		if (!optS.isPresent())
+			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Seance.class.getName());
+		else {			
+			List<Assister> clients = optS.get().getClients();
+			for (Assister c: clients) {
+				prix += c.getPrix();
+			}			
+		}
+		return prix;
 	}
 
 }
