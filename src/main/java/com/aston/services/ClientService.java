@@ -3,8 +3,6 @@ package com.aston.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-
 import com.aston.models.Client;
 
 public interface ClientService {
