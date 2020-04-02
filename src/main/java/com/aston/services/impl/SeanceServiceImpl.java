@@ -8,9 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.aston.exceptions.EntityNotFoundException;
+import com.aston.exceptions.NullValueException;
 import com.aston.models.Assister;
 import com.aston.models.Client;
 import com.aston.models.Film;
+import com.aston.models.Salle;
 import com.aston.models.Seance;
 import com.aston.repositories.SeanceRepository;
 import com.aston.services.ClientService;
@@ -82,15 +84,24 @@ public class SeanceServiceImpl implements SeanceService {
 		// combien a rapporté une séance
 		float prix = 0;
 		Optional<Seance> optS = this.findById(id);
-		if (!optS.isPresent())
+		/*if (!optS.isPresent())
 			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Seance.class.getName());
-		else {			
-			List<Assister> clients = optS.get().getClients();
-			for (Assister c: clients) {
-				prix += c.getPrix();
-			}			
-		}
+		else {
+			*/
+		List<Assister> clients = optS.get().getClients();
+		for (Assister c: clients)
+			prix += c.getPrix();
 		return prix;
+	}
+
+	@Override
+	public int getPlaces(String id) {
+		Optional<Seance> optS = this.findById(id);
+		if (optS.get().getSalle() == null)
+			throw new NullValueException(HttpStatus.NO_CONTENT, "Aucune salle n'a été trouvée dans la séance " + id);
+		int totalPlaces = optS.get().getSalle().getPlace();
+		int placesTaken = optS.get().getClients().size();
+		return totalPlaces - placesTaken;
 	}
 
 }

@@ -56,10 +56,16 @@ public class SeanceController {
 		return this.seanceService.addClient(sId, cId);
 	}
 	
-	// combien a rapporté une séance
+	// Get the income of a seance
 	@GetMapping("{id}/recette")
 	public float getRecette(@PathVariable String id) {
 		return this.seanceService.getRecette(id);
+	}
+	
+	// Get the number of places remaining
+	@GetMapping("{id}/places")
+	public int getPlaces(@PathVariable String id) {
+		return this.seanceService.getPlaces(id);
 	}
 	
 	
