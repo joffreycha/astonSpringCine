@@ -15,8 +15,7 @@ import com.aston.services.SalleService;
 @Service
 public class SalleServiceImpl implements SalleService {
 
-	@Autowired
-	private SalleRepository salleRepository;
+	@Autowired	private SalleRepository salleRepository;
 
 	@Override
 	public Salle save(Salle s) {
@@ -45,8 +44,6 @@ public class SalleServiceImpl implements SalleService {
 	@Override
 	public void deleteById(String id) {
 		this.salleRepository.deleteById(id);
-		
 	}
-	
 	
 }

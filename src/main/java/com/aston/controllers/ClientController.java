@@ -1,7 +1,6 @@
 package com.aston.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,31 +21,36 @@ import com.aston.services.ClientService;
 @RequestMapping("clients")
 public class ClientController {
 	
-	@Autowired
-	private ClientService clientService;
-	
-	@PostMapping("")
-	public Client save(@RequestBody Client c) {
-		return this.clientService.save(c);
-	}
+	@Autowired	private ClientService clientService;
 	
 	@GetMapping("")
 	public List<Client> findAll() {
 		return this.clientService.findAll();
 	}
 	
-	@GetMapping("{id}")
-	public Optional<Client> findById(@PathVariable String id) {
-		return this.clientService.findById(id);
+	@PostMapping("")
+	public Client save(@RequestBody Client c) {
+		return this.clientService.save(c);
 	}
-	
+
 	@PutMapping("")
 	public Client update(@RequestBody Client c) {
 		return this.clientService.save(c);
 	}
 
+	@DeleteMapping("")
+	public void delete(@RequestBody Client c) {
+		this.deleteById(c.getId());
+	}
+	
 	@DeleteMapping("{id}")
 	public void deleteById(@PathVariable String id) {
 		this.clientService.deleteById(id);
 	}
+	
+	@GetMapping("{id}")
+	public Client findById(@PathVariable String id) {
+		return this.clientService.findById(id);
+	}
+	
 }

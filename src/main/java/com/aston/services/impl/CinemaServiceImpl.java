@@ -19,10 +19,8 @@ import com.aston.services.SalleService;
 @Service
 public class CinemaServiceImpl implements CinemaService {
 
-	@Autowired
-	private CinemaRepository cinemaRepository;
-	@Autowired
-	private SalleService salleService;
+	@Autowired	private CinemaRepository cinemaRepository;
+	@Autowired	private SalleService salleService;
 	
 	@Override
 	public CinemaDTO save(CinemaDTO cDto) {
@@ -60,7 +58,7 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Override
 	public void deleteById(String id) {
-		this.findById(id); // check if the id exists
+		this.findById(id); // check si l'id existe
 		this.cinemaRepository.deleteById(id);
 	}
 

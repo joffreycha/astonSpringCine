@@ -13,8 +13,7 @@ import com.aston.services.AssisterService;
 
 public class AssisterServiceImpl implements AssisterService {
 
-	@Autowired
-	private AssisterRepository assisterRepository;
+	@Autowired	private AssisterRepository assisterRepository;
 	
 	@Override
 	public Assister save(Assister a) {
@@ -41,7 +40,7 @@ public class AssisterServiceImpl implements AssisterService {
 
 	@Override
 	public void deleteById(String id) {
-		this.findById(id);
+		this.findById(id); // check si l'id existe
 		this.assisterRepository.deleteById(id);
 
 	}

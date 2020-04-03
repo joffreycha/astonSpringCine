@@ -22,14 +22,9 @@ import com.aston.services.SeanceService;
 @Service
 public class SeanceServiceImpl implements SeanceService {
 
-	@Autowired
-	private SeanceRepository seanceRepository;
-	
-	@Autowired
-	private ClientService clientService;
-	
-	@Autowired
-	private AssisterService assisterService;
+	@Autowired	private SeanceRepository seanceRepository;
+	@Autowired	private ClientService clientService;
+	@Autowired	private AssisterService assisterService;
 	
 	@Override
 	public Seance save(Seance s) {
@@ -74,9 +69,10 @@ public class SeanceServiceImpl implements SeanceService {
 		return this.seanceRepository.findAllByFilm(f);
 	}
 
+	// Calcule la recette d'une séance
 	@Override
 	public float getRecette(String id) {
-		// combien a rapporté une séance
+		
 		float prix = 0;
 		Seance s = this.findById(id);
 		List<Assister> clients = s.getClients();
@@ -85,6 +81,7 @@ public class SeanceServiceImpl implements SeanceService {
 		return prix;
 	}
 
+	// Récupère le nombre de places restantes pour une séance
 	@Override
 	public int getPlaces(String id) {
 		Optional<Seance> optS = this.seanceRepository.findById(id);

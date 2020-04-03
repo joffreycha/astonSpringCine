@@ -1,7 +1,6 @@
 package com.aston.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,25 +23,25 @@ public class SeanceController {
 
 	@Autowired
 	private SeanceService seanceService;
-	
-	@PostMapping("")
-	public Seance save(@RequestBody Seance s) {
-		return this.seanceService.save(s);
-	}
-	
+
 	@GetMapping("")
 	public List<Seance> findAll() {
 		return this.seanceService.findAll();
 	}
 	
-	@GetMapping("{id}")
-	public Optional<Seance> findById(@PathVariable String id) {
-		return this.seanceService.findById(id);
+	@PostMapping("")
+	public Seance save(@RequestBody Seance s) {
+		return this.seanceService.save(s);
 	}
-	
+
 	@PutMapping("")
 	public Seance update(@RequestBody Seance s) {
 		return this.seanceService.update(s);
+	}
+	
+	@DeleteMapping("")
+	public void delete(@RequestBody Seance s) {
+		this.deleteById(s.getId());
 	}
 	
 	@DeleteMapping("{id}")
@@ -50,23 +49,46 @@ public class SeanceController {
 		this.seanceService.deleteById(id);
 	}
 	
-	
-	@PutMapping("{sId}/clients/{cId}")
-	public Seance addClient(@PathVariable String sId, @PathVariable String cId) {
-		return this.seanceService.addClient(sId, cId);
+	@GetMapping("{id}")
+	public Seance findById(@PathVariable String id) {
+		return this.seanceService.findById(id);
 	}
 	
-	// Get the income of a seance
+	// Récupère la recette d'une seance par son id
 	@GetMapping("{id}/recette")
 	public float getRecette(@PathVariable String id) {
 		return this.seanceService.getRecette(id);
 	}
-	
-	// Get the number of places remaining
+
+	// Récupère le nombre de places restantes pour une séance
 	@GetMapping("{id}/places")
 	public int getPlaces(@PathVariable String id) {
 		return this.seanceService.getPlaces(id);
 	}
+	
+	// TODO
+	@GetMapping("{id}/horaire/{min}/{max}")
+	public List<Seance> getSeanceByHoraire(@PathVariable int min, @PathVariable int max) {
+		return null;
+	}
+	
+	// TODO
+	@GetMapping("{id}/film/{nom}")
+	public List<Seance> getSeanceByFilmNom(@PathVariable String nom) {
+		return null;
+	}
+	
+	/**
+	 * Ajoute un client (Assister) à une séance
+	 * @param sId id de la séance
+	 * @param cId id du client à ajouter
+	 */
+	@PostMapping("{sId}/assister/{cId}")
+	public void addClient(@PathVariable String sId, @PathVariable String cId) {
+		this.seanceService.addClient(sId, cId);
+	}
+	
+
 	
 	
 }

@@ -1,7 +1,6 @@
 package com.aston.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,27 +21,26 @@ import com.aston.services.FilmService;
 @RequestMapping("films")
 public class FilmController {
 
-	@Autowired
-	private FilmService filmService;
-	
-	@PostMapping("")
-	public Film save(@RequestBody Film f) {
-		return this.filmService.save(f);
-	}
-	
+	@Autowired private FilmService filmService;
+
 	@GetMapping("")
 	public List<Film> findAll() {
 		return this.filmService.findAll();
 	}
 	
-	@GetMapping("{id}")
-	public Optional<Film> findById(@PathVariable String id) {
-		return this.filmService.findById(id);
+	@PostMapping("")
+	public Film save(@RequestBody Film f) {
+		return this.filmService.save(f);
 	}
-	
+
 	@PutMapping("")
 	public Film update(@RequestBody Film f) {
 		return this.filmService.update(f);
+	}
+	
+	@DeleteMapping("")
+	public void deleteById(@RequestBody Film f) {
+		this.deleteById(f.getId());
 	}
 	
 	@DeleteMapping("{id}")
@@ -50,7 +48,16 @@ public class FilmController {
 		this.filmService.deleteById(id);
 	}
 	
-	// combien a rapporté un film
+	@GetMapping("{id}")
+	public Film findById(@PathVariable String id) {
+		return this.filmService.findById(id);
+	}
+	
+	/**
+	 * Récupère la recette d'un film par son id
+	 * @param id id du film
+	 * @return le montant de la recette en float
+	 */
 	@GetMapping("{id}/recette")
 	public float getRecette(@PathVariable String id) {
 		return this.filmService.getRecette(id);

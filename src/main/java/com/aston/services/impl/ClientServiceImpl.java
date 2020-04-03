@@ -15,8 +15,7 @@ import com.aston.services.ClientService;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-	@Autowired
-	private ClientRepository clientRepository;
+	@Autowired	private ClientRepository clientRepository;
 	
 	@Override
 	public Client save(Client c) {
@@ -29,21 +28,21 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public Optional<Client> findById(String id) {
+	public Client findById(String id) {
 		Optional<Client> c = this.clientRepository.findById(id);
 		if (!c.isPresent())
 			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Client.class.getName());
-		return c;
+		return c.get();
 	}
 
 	@Override
 	public Client update(Client c) {
-		return this.clientRepository.save(c);
+		return this.save(c);
 	}
 
 	@Override
 	public void deleteById(String id) {
-		this.findById(id); // check if the id exists
+		this.findById(id); // check si l'id existe
 		this.clientRepository.deleteById(id);
 	}
 

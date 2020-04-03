@@ -13,11 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Film {
 
-	@Id
-	private String id;
-	
+	@Id	private String id;
 	private String titre;
-	private int duree; // in minutes
+	private int duree; // en minutes
 	private int ageLimite;
 	private String genre;
 	private String visa;

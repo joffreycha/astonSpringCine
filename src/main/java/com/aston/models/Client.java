@@ -15,9 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Client {
 	
-	@Id
-	private String id;
-	
+	@Id	private String id;
 	private String nom;
 	private boolean etudiant;
 	private LocalDate naissance;

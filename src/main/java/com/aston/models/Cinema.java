@@ -13,9 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Cinema {
 
-	@Id
-	private String id;
-	
+	@Id	private String id;
 	private String nom;
 	private String adresse;
 }

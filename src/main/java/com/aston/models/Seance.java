@@ -18,19 +18,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Seance {
 
-	@Id
-	private String id;
-	
-	@DBRef
-	private Film film;
-	
+	@Id	private String id;
+	@DBRef	private Film film;
 	private LocalDateTime date;
-	
 	private List<Assister> clients = new ArrayList<Assister>(); 
-	
-	@DBRef
-	private Salle salle;
-	
+	@DBRef	private Salle salle;
 	private String type;
-	
 }

@@ -14,13 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Salle {
 
-	@Id
-	private String id;
-	
+	@Id	private String id;
 	private String nom;
-	
-	@DBRef
-	private Cinema cinema;
-
+	@DBRef	private Cinema cinema;
 	private int place;
 }
