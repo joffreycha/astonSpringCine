@@ -88,6 +88,14 @@ public class SeanceController {
 	}
 	
 
+	@GetMapping("film/{genre}")
+	public List<Seance> findSeanceByFilmGenre(@PathVariable String genre) {
+		return this.seanceService.findSeanceByFilmGenre(genre);
+	}
 	
+	@GetMapping("{type}")
+	public List<Seance> findSeanceByType(@PathVariable String type) {
+		return this.seanceService.findSeanceByType(type);
+	}
 	
 }

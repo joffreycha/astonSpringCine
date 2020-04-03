@@ -51,7 +51,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public int getAge(Client c) {
 		int age = 0;
-		Period period = Period.between(LocalDate.now(), c.getNaissance());
+		Period period = Period.between(c.getNaissance(), LocalDate.now());
 		age = period.getYears();
 
 		return age;

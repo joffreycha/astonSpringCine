@@ -27,14 +27,15 @@ public class CinemaServiceImpl implements CinemaService {
 		// TODO Exception
 		Cinema c = cDto.getCinema();
 		if (c == null) {
-			throw new NullValueException(HttpStatus.BAD_REQUEST, "Le cinema est null");
+			throw new NullValueException(HttpStatus.BAD_REQUEST, "Le cinema n'a pas été rempli correctement");
 		}
+
+		this.cinemaRepository.save(c);
 		
 		for (Salle s : cDto.getSalles()) {
 			s.setCinema(c);
-			this.salleService.save(s);
+			s.setId(this.salleService.save(s).getId());
 		}
-		this.cinemaRepository.save(c);
 		return cDto;
 	}
 

@@ -16,7 +16,6 @@ import com.aston.models.Client;
 import com.aston.models.Film;
 import com.aston.models.Seance;
 import com.aston.repositories.SeanceRepository;
-import com.aston.services.AssisterService;
 import com.aston.services.ClientService;
 import com.aston.services.SeanceService;
 
@@ -25,13 +24,11 @@ public class SeanceServiceImpl implements SeanceService {
 
 	@Autowired	private SeanceRepository seanceRepository;
 	@Autowired	private ClientService clientService;
-	@Autowired	private AssisterService assisterService;
-	
 	@Override
 	public Seance save(Seance s) {
 		int nbClients = s.getClients().size();
-		int nbPlacesRestantes = this.getPlacesRestantes(s.getId());
-		if (nbPlacesRestantes < nbClients)
+		int nbPlaces = s.getSalle().getPlace();
+		if (nbPlaces < nbClients)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Trop de clients pour le nombre de places");
 		
 		return this.seanceRepository.save(s);
@@ -53,7 +50,12 @@ public class SeanceServiceImpl implements SeanceService {
 
 	@Override
 	public Seance update(Seance s) {
-		return this.save(s);
+		int nbClients = s.getClients().size();
+		int nbPlacesRestantes = this.getPlacesRestantes(s.getId());
+		if (nbPlacesRestantes < nbClients)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Trop de clients par rapport au nombre de places restantes");
+		
+		return this.seanceRepository.save(s);
 	}
 
 	@Override
@@ -130,10 +132,10 @@ public class SeanceServiceImpl implements SeanceService {
 	 * @param aId id du client
 	 * @return le prix de la séance
 	 */
-	public float calculerPrix(String sId, String aId) {
+	public float calculerPrix(String sId, String cId) {
 		float prix = 10; // prix de base: 10 euros
 		Seance s = this.findById(sId);
-		Assister a = this.assisterService.findById(aId);
+		Client c = this.clientService.findById(cId);
 		s.getClients();
 		
 		switch (s.getType()) {
@@ -155,14 +157,24 @@ public class SeanceServiceImpl implements SeanceService {
 			break;
 		}
 		
-		int age = this.clientService.getAge(a.getClient());
+		int age = this.clientService.getAge(c);
 		if (age < 10) // remise enfant (-10 ans): -4 euros
 			prix -= 4;
 			
-		if (a.getClient().isEtudiant())	// remise etudiant : -2 euros
+		if (c.isEtudiant())	// remise etudiant : -2 euros
 			prix -= 2;
 		
 		return prix;
+	}
+
+	@Override
+	public List<Seance> findSeanceByFilmGenre(String genre) {
+		return this.seanceRepository.findSeanceByFilmGenre(genre);
+	}
+
+	@Override
+	public List<Seance> findSeanceByType(String type) {
+		return this.seanceRepository.findSeanceByType(type);
 	}
 
 

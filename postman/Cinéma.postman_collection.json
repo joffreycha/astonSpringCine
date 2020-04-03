@@ -9,33 +9,6 @@
 			"name": "Séances",
 			"item": [
 				{
-					"name": "save",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"film\": \n\t\t{\n\t\t\t\"id\": \"5e84875b301cd67f52db0238\"\n\t\t},\n\t\"date\": \"2015-10-28T21:00:00.000\",\n\t\"type\": \"2D\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/seances",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"seances"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "findAll",
 					"request": {
 						"method": "GET",
@@ -54,19 +27,27 @@
 					"response": []
 				},
 				{
-					"name": "findById",
+					"name": "save",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"film\": \n\t\t{\n\t\t\t\"id\": \"5e84a0189fd68318d27ea80c\"\n\t\t},\n\t\"date\": \"2017-05-04T21:00:00.000\",\n\t\"type\": \"3D\",\n\t\"salle\":\n\t\t{\n\t\t\t\"id\":\"???\"\n\t\t}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "localhost:8080/seances/5e848ecf02898418eaceaf48",
+							"raw": "localhost:8080/seances",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"seances",
-								"5e848ecf02898418eaceaf48"
+								"seances"
 							]
 						}
 					},
@@ -108,6 +89,86 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/seances/5e848ecf02898418eaceaf48",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"seances",
+								"5e848ecf02898418eaceaf48"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addClient",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/seances/5e87274bb185150577828ef3/clients/5e85b6b0842e186e0a3ba70e",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"seances",
+								"5e87274bb185150577828ef3",
+								"clients",
+								"5e85b6b0842e186e0a3ba70e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRecette",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/seances/5e848ecf02898418eaceaf48/recette",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"seances",
+								"5e848ecf02898418eaceaf48",
+								"recette"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPlaces",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/seances/5e848ecf02898418eaceaf48/places",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"seances",
+								"5e848ecf02898418eaceaf48",
+								"places"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -116,13 +177,31 @@
 			"name": "Clients",
 			"item": [
 				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/clients",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "save",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nom\": \"Michel\",\r\n    \"etudiant\": false,\r\n    \"naissance\": \"1966-05-01\"\r\n}",
+							"raw": "{\r\n    \"nom\": \"Micheline\",\r\n    \"etudiant\": false,\r\n    \"naissance\": \"1980-07-15\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -143,50 +222,13 @@
 					"response": []
 				},
 				{
-					"name": "findAll",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8080/clients",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"clients"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "findById",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8080/clients/5e848c193e85821810da12d2",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"clients",
-								"5e848c193e85821810da12d2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "update",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"5e848c193e85821810da12d2\",\r\n    \"nom\": \"Michel\",\r\n    \"etudiant\": false,\r\n    \"naissance\": \"1966-05-10\"\r\n}",
+							"raw": "{\r\n    \"id\": \"5e8724686f21e634f55789d4\",\r\n    \"nom\": \"Micheline\",\r\n    \"etudiant\": false,\r\n    \"naissance\": \"2012-07-15\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -213,14 +255,33 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/clients/5e848c07598cd8661e0568db",
+							"raw": "localhost:8080/clients/5e87249d6f21e634f55789d5",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"clients",
-								"5e848c07598cd8661e0568db"
+								"5e87249d6f21e634f55789d5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/clients/5e8724686f21e634f55789d4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clients",
+								"5e8724686f21e634f55789d4"
 							]
 						}
 					},
@@ -233,13 +294,31 @@
 			"name": "Films",
 			"item": [
 				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/films",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "save",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"titre\": \"La Liste de Schindler\",\r\n    \"duree\": 195,\r\n    \"genre\": \"Historique\"\r\n}",
+							"raw": "{\r\n    \"titre\": \"Le Seigneur des anneaux : La communauté de l'anneau\",\r\n    \"duree\": 178,\r\n    \"ageLimite\": 12,\r\n    \"genre\": \"Fantastique\",\r\n    \"visa\": \"104293\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -260,50 +339,13 @@
 					"response": []
 				},
 				{
-					"name": "findAll",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8080/films",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"films"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "findById",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8080/films/5e84875b301cd67f52db0238",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"films",
-								"5e84875b301cd67f52db0238"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "update",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\r\n    \"id\": \"5e848a97598cd8661e0568d9\",\r\n    \"titre\": \"Forrest Gump\",\r\n    \"duree\": 140,\r\n    \"ageLimite\": null,\r\n    \"genre\": \"Comédie dramatique\",\r\n    \"visa\": \"86499\"\r\n}",
+							"raw": "{\r\n    \"id\": \"5e848af2598cd8661e0568da\",\r\n    \"titre\": \"La Liste de Schindler\",\r\n    \"duree\": 195,\r\n    \"ageLimite\": 16,\r\n    \"genre\": \"Historique\",\r\n    \"visa\": null\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -330,14 +372,53 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/films/5e84865f301cd67f52db0236",
+							"raw": "localhost:8080/films/5e8486bd301cd67f52db0237",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"films",
-								"5e84865f301cd67f52db0236"
+								"5e8486bd301cd67f52db0237"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/films/5e848af2598cd8661e0568da",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"films",
+								"5e848af2598cd8661e0568da"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRecette",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/films/5e848a97598cd8661e0568d9/recette",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"films",
+								"5e848a97598cd8661e0568d9",
+								"recette"
 							]
 						}
 					},
@@ -362,6 +443,39 @@
 							"port": "8080",
 							"path": [
 								"tests"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Cinema",
+			"item": [
+				{
+					"name": "save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cinema\": \n\t{\n\t\t\"nom\": \"UGC\",\n\t\t\"adresse\": \"40 Rue de Béthune, 59800 Lille\"\n\t},\n\t\"salle\":\n\t[\n\t\t{\n\t\t\t\"nom\":\"Salle C\",\n\t\t\t\"place\":45\n\t\t},\n\t\t{\n\t\t\t\"nom\":\"Salle D\",\n\t\t\t\"place\":55\n\t\t}\n\t]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/cinemas",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cinemas"
 							]
 						}
 					},
