@@ -26,7 +26,6 @@ public class Seance {
 	
 	private LocalDateTime date;
 	
-	@DBRef
 	private List<Assister> clients = new ArrayList<Assister>(); 
 	
 	@DBRef
