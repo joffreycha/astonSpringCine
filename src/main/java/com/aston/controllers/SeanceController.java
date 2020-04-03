@@ -1,5 +1,6 @@
 package com.aston.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,19 +64,17 @@ public class SeanceController {
 	// Récupère le nombre de places restantes pour une séance
 	@GetMapping("{id}/places")
 	public int getPlaces(@PathVariable String id) {
-		return this.seanceService.getPlaces(id);
+		return this.seanceService.getPlacesRestantes(id);
 	}
 	
-	// TODO
 	@GetMapping("{id}/horaire/{min}/{max}")
-	public List<Seance> findSeanceByHoraire(@PathVariable int min, @PathVariable int max) {
-		return this.seanceService.findSeanceByHoraire(min, max);
+	public List<Seance> findSeanceByDateBetween(@PathVariable LocalDateTime min, @PathVariable LocalDateTime max) {
+		return this.seanceService.findSeanceByDateBetween(min, max);
 	}
 	
-	// TODO
 	@GetMapping("{id}/film/{nom}")
-	public List<Seance> findSeanceByFilmNom(@PathVariable String nom) {
-		return this.seanceService.findSeanceByFilmNom(nom);
+	public List<Seance> findSeanceByFilmTitre(@PathVariable String titre) {
+		return this.seanceService.findSeanceByFilmTitre(titre);
 	}
 	
 	/**

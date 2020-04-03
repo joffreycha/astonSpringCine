@@ -4,10 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.aston.exceptions.EntityNotFoundException;
+import com.aston.exceptions.NotFoundException;
 import com.aston.models.Assister;
 import com.aston.models.Film;
 import com.aston.models.Seance;
@@ -35,7 +34,7 @@ public class FilmServiceImpl implements FilmService {
 	public Film findById(String id) {
 		Optional<Film> f  = this.filmRepository.findById(id);
 		if (!f.isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Film.class.getName());
+			throw new NotFoundException(id, Film.class.getSimpleName());
 		return f.get();
 	}
 

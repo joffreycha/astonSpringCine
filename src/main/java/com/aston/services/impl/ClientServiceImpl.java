@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.aston.exceptions.EntityNotFoundException;
+import com.aston.exceptions.NotFoundException;
 import com.aston.models.Client;
 import com.aston.repositories.ClientRepository;
 import com.aston.services.ClientService;
@@ -33,7 +32,7 @@ public class ClientServiceImpl implements ClientService {
 	public Client findById(String id) {
 		Optional<Client> c = this.clientRepository.findById(id);
 		if (!c.isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Client.class.getName());
+			throw new NotFoundException(id, Client.class.getSimpleName());
 		return c.get();
 	}
 

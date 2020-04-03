@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.aston.dto.CinemaDTO;
-import com.aston.exceptions.EntityNotFoundException;
+import com.aston.exceptions.NotFoundException;
 import com.aston.exceptions.NullValueException;
 import com.aston.models.Cinema;
 import com.aston.models.Salle;
@@ -47,7 +47,7 @@ public class CinemaServiceImpl implements CinemaService {
 	public Cinema findById(String id) {
 		Optional<Cinema> c = this.cinemaRepository.findById(id);
 		if (!c.isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Cinema.class.getName());
+			throw new NotFoundException(id, Cinema.class.getSimpleName());
 		return c.get();
 	}
 

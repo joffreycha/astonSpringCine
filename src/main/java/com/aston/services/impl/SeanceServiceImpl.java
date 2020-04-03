@@ -1,13 +1,15 @@
 package com.aston.services.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import com.aston.exceptions.EntityNotFoundException;
+import com.aston.exceptions.NotFoundException;
 import com.aston.exceptions.NullValueException;
 import com.aston.models.Assister;
 import com.aston.models.Client;
@@ -27,6 +29,11 @@ public class SeanceServiceImpl implements SeanceService {
 	
 	@Override
 	public Seance save(Seance s) {
+		int nbClients = s.getClients().size();
+		int nbPlacesRestantes = this.getPlacesRestantes(s.getId());
+		if (nbPlacesRestantes < nbClients)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Trop de clients pour le nombre de places");
+		
 		return this.seanceRepository.save(s);
 	}
 
@@ -39,7 +46,7 @@ public class SeanceServiceImpl implements SeanceService {
 	public Seance findById(String id) {
 		Optional<Seance> s = this.seanceRepository.findById(id);
 		if (!s.isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Seance.class.getName());
+			throw new NotFoundException(id, Seance.class.getSimpleName());
 		
 		return s.get();
 	}
@@ -60,6 +67,13 @@ public class SeanceServiceImpl implements SeanceService {
 	public Seance addClient(String sId, String cId) {
 		Seance s = this.findById(sId);
 		Client c = this.clientService.findById(cId);
+		
+		int ageLimite = s.getFilm().getAgeLimite();
+		int age = this.clientService.getAge(c);
+		
+		if (age < ageLimite)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le client " + cId + " (" + age + " ans) n'a pas l'âge minimum requis de " + ageLimite); 
+		
 		s.getClients().add(new Assister(this.calculerPrix(sId, cId), c));
 		
 		return this.update(s);
@@ -84,7 +98,7 @@ public class SeanceServiceImpl implements SeanceService {
 
 	// Récupère le nombre de places restantes pour une séance
 	@Override
-	public int getPlaces(String id) {
+	public int getPlacesRestantes(String id) {
 		Optional<Seance> optS = this.seanceRepository.findById(id);
 		if (optS.get().getSalle() == null)
 			throw new NullValueException(HttpStatus.NO_CONTENT, "Aucune salle n'a été trouvée dans la séance " + id);
@@ -95,15 +109,13 @@ public class SeanceServiceImpl implements SeanceService {
 	}
 	
 	@Override
-	public List<Seance> findSeanceByHoraire(int min, int max) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Seance> findSeanceByDateBetween(LocalDateTime min, LocalDateTime max) {
+		return this.seanceRepository.findSeanceByDateBetween(min, max);
 	}
 
 	@Override
-	public List<Seance> findSeanceByFilmNom(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Seance> findSeanceByFilmTitre(String titre) {
+		return this.seanceRepository.findSeanceByFilmTitre(titre);
 	}
 
 	/**

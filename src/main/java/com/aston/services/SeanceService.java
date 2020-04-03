@@ -1,5 +1,6 @@
 package com.aston.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.aston.models.Film;
@@ -17,7 +18,7 @@ public interface SeanceService {
 	public List<Seance> findAllByFilm(Film f);
 
 	public float getRecette(String id);
-	public int getPlaces(String id);
-	public List<Seance> findSeanceByHoraire(int min, int max);
-	public List<Seance> findSeanceByFilmNom(String nom);
+	public int getPlacesRestantes(String id);
+	public List<Seance> findSeanceByDateBetween(LocalDateTime min, LocalDateTime max);
+	public List<Seance> findSeanceByFilmTitre(String titre);
 }

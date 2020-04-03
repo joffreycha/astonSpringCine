@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
-import com.aston.exceptions.EntityNotFoundException;
+import com.aston.exceptions.NotFoundException;
 import com.aston.models.Assister;
 import com.aston.repositories.AssisterRepository;
 import com.aston.services.AssisterService;
 
+@Service
 public class AssisterServiceImpl implements AssisterService {
 
 	@Autowired	private AssisterRepository assisterRepository;
@@ -29,7 +30,7 @@ public class AssisterServiceImpl implements AssisterService {
 	public Assister findById(String id) {
 		Optional<Assister> a = this.assisterRepository.findById(id);
 		if (!a.isPresent())
-			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Assister.class.getName());
+			throw new NotFoundException(id, Assister.class.getSimpleName());
 		return a.get();
 	}
 
