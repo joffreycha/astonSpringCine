@@ -1,15 +1,15 @@
 package com.aston.services;
 
 import java.util.List;
-import java.util.Optional;
 
+import com.aston.dto.CinemaDTO;
 import com.aston.models.Cinema;
 
 public interface CinemaService {
 
-	public Cinema save(Cinema c);
+	public CinemaDTO save(CinemaDTO cDto);
 	public List<Cinema> findAll();
-	public Optional<Cinema> findById(String id);
-	public Cinema update(Cinema c);
+	public Cinema findById(String id);
+	public CinemaDTO update(CinemaDTO cDto);
 	public void deleteById(String id);
 }
