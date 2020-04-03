@@ -50,7 +50,7 @@ public class FilmServiceImpl implements FilmService {
 		this.filmRepository.deleteById(id);
 	}
 	
-	// Calcule la recette d'un film
+	// Calcule et retourne la recette d'un film
 	@Override
 	public float getRecette(String id) {
 		
@@ -63,6 +63,7 @@ public class FilmServiceImpl implements FilmService {
 				prix += c.getPrix();
 			}
 		}
+		
 		return prix;
 	}
 

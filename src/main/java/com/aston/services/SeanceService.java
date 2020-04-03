@@ -18,4 +18,6 @@ public interface SeanceService {
 
 	public float getRecette(String id);
 	public int getPlaces(String id);
+	public List<Seance> findSeanceByHoraire(int min, int max);
+	public List<Seance> findSeanceByFilmNom(String nom);
 }

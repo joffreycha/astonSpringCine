@@ -68,14 +68,14 @@ public class SeanceController {
 	
 	// TODO
 	@GetMapping("{id}/horaire/{min}/{max}")
-	public List<Seance> getSeanceByHoraire(@PathVariable int min, @PathVariable int max) {
-		return null;
+	public List<Seance> findSeanceByHoraire(@PathVariable int min, @PathVariable int max) {
+		return this.seanceService.findSeanceByHoraire(min, max);
 	}
 	
 	// TODO
 	@GetMapping("{id}/film/{nom}")
-	public List<Seance> getSeanceByFilmNom(@PathVariable String nom) {
-		return null;
+	public List<Seance> findSeanceByFilmNom(@PathVariable String nom) {
+		return this.seanceService.findSeanceByFilmNom(nom);
 	}
 	
 	/**

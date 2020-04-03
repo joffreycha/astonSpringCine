@@ -1,6 +1,5 @@
 package com.aston.services.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +40,7 @@ public class SeanceServiceImpl implements SeanceService {
 		Optional<Seance> s = this.seanceRepository.findById(id);
 		if (!s.isPresent())
 			throw new EntityNotFoundException(HttpStatus.NOT_FOUND, id, Seance.class.getName());
+		
 		return s.get();
 	}
 
@@ -55,12 +55,13 @@ public class SeanceServiceImpl implements SeanceService {
 		this.seanceRepository.deleteById(id);
 	}
 
+	// Ajoute un client à une séance
 	@Override
 	public Seance addClient(String sId, String cId) {
 		Seance s = this.findById(sId);
 		Client c = this.clientService.findById(cId);
-		
 		s.getClients().add(new Assister(this.calculerPrix(sId, cId), c));
+		
 		return this.update(s);
 	}
 
@@ -69,15 +70,15 @@ public class SeanceServiceImpl implements SeanceService {
 		return this.seanceRepository.findAllByFilm(f);
 	}
 
-	// Calcule la recette d'une séance
+	// Calcule et retourne la recette d'une séance
 	@Override
 	public float getRecette(String id) {
-		
-		float prix = 0;
+		float prix = 0f;
 		Seance s = this.findById(id);
 		List<Assister> clients = s.getClients();
 		for (Assister c: clients)
 			prix += c.getPrix();
+		
 		return prix;
 	}
 
@@ -89,7 +90,20 @@ public class SeanceServiceImpl implements SeanceService {
 			throw new NullValueException(HttpStatus.NO_CONTENT, "Aucune salle n'a été trouvée dans la séance " + id);
 		int totalPlaces = optS.get().getSalle().getPlace();
 		int placesTaken = optS.get().getClients().size();
+		
 		return totalPlaces - placesTaken;
+	}
+	
+	@Override
+	public List<Seance> findSeanceByHoraire(int min, int max) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Seance> findSeanceByFilmNom(String nom) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -102,11 +116,10 @@ public class SeanceServiceImpl implements SeanceService {
 		seance 4DX: + 8 euros
 	 * @param sId id de la séance
 	 * @param aId id du client
-	 * @return
+	 * @return le prix de la séance
 	 */
 	public float calculerPrix(String sId, String aId) {
 		float prix = 10; // prix de base: 10 euros
-		
 		Seance s = this.findById(sId);
 		Assister a = this.assisterService.findById(aId);
 		s.getClients();
@@ -125,21 +138,21 @@ public class SeanceServiceImpl implements SeanceService {
 			break;
 			
 		default:
+			// TODO Exception
 			System.out.println("Erreur de type");
 			break;
 		}
 		
-		// TODO calculer l'âge proprement
-		int age = LocalDate.now().getYear() - a.getClient().getNaissance().getYear();
-		
+		int age = this.clientService.getAge(a.getClient());
 		if (age < 10) // remise enfant (-10 ans): -4 euros
 			prix -= 4;
 			
-		
 		if (a.getClient().isEtudiant())	// remise etudiant : -2 euros
 			prix -= 2;
 		
 		return prix;
 	}
+
+
 
 }

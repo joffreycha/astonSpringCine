@@ -1,5 +1,7 @@
 package com.aston.services.impl;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +46,16 @@ public class ClientServiceImpl implements ClientService {
 	public void deleteById(String id) {
 		this.findById(id); // check si l'id existe
 		this.clientRepository.deleteById(id);
+	}
+	
+	// Calcule et retourne l'age d'un client
+	@Override
+	public int getAge(Client c) {
+		int age = 0;
+		Period period = Period.between(LocalDate.now(), c.getNaissance());
+		age = period.getYears();
+
+		return age;
 	}
 
 }

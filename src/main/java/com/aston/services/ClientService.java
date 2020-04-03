@@ -12,4 +12,5 @@ public interface ClientService {
 	public Client update(Client c);
 	public void deleteById(String id);
 	
+	public int getAge(Client c);
 }
