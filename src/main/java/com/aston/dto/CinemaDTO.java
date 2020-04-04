@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Classe qui permet de facilier l'enregistrement d'un cinéma avec des salles (et non l'inverse)
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

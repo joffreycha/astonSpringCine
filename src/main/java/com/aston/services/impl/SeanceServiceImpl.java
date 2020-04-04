@@ -1,6 +1,7 @@
 package com.aston.services.impl;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,13 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.aston.exceptions.NotFoundException;
-import com.aston.exceptions.NullValueException;
 import com.aston.models.Assister;
 import com.aston.models.Client;
 import com.aston.models.Film;
 import com.aston.models.Seance;
 import com.aston.repositories.SeanceRepository;
+import com.aston.services.AssisterService;
 import com.aston.services.ClientService;
+import com.aston.services.FilmService;
+import com.aston.services.SalleService;
 import com.aston.services.SeanceService;
 
 @Service
@@ -24,12 +27,35 @@ public class SeanceServiceImpl implements SeanceService {
 
 	@Autowired	private SeanceRepository seanceRepository;
 	@Autowired	private ClientService clientService;
+	@Autowired	private SalleService salleService;
+	@Autowired	private FilmService filmService;
+	@Autowired	private AssisterService assisterService;
+	
 	@Override
 	public Seance save(Seance s) {
+		// Check si les champs requis sont null
+		if (s.getSalle() == null)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci de sélectionner une salle pour la séance");
+		if (s.getFilm() == null)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci de sélectionner un film pour la séance");
+	
+		// Check si la salle et le film choisis existent bien
+		this.salleService.findById(s.getSalle().getId());
+		this.filmService.findById(s.getFilm().getId());
+	
+		// Check s'il y a suffisament de places dans la salle par rapport au nombre de clients
 		int nbClients = s.getClients().size();
-		int nbPlaces = s.getSalle().getPlace();
-		if (nbPlaces < nbClients)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Trop de clients pour le nombre de places");
+		int nbPlacesRestantes = this.getPlacesRestantes(s.getId());
+		if (nbPlacesRestantes < nbClients)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Trop de clients par rapport au nombre de places restantes");
+		
+		// Check si le champ type a bien été rempli
+		if (s.getType().equals("2D")
+				&& s.getType().equals("3D")
+				&& s.getType().equals("IMAX") 
+				&& s.getType().equals("4DX")
+			)
+				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Erreur dans le champ type : le type " + s.getType() + " n'existe pas");
 		
 		return this.seanceRepository.save(s);
 	}
@@ -50,43 +76,64 @@ public class SeanceServiceImpl implements SeanceService {
 
 	@Override
 	public Seance update(Seance s) {
-		int nbClients = s.getClients().size();
-		int nbPlacesRestantes = this.getPlacesRestantes(s.getId());
-		if (nbPlacesRestantes < nbClients)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Trop de clients par rapport au nombre de places restantes");
-		
-		return this.seanceRepository.save(s);
+		return this.save(s);
 	}
 
 	@Override
 	public void deleteById(String id) {
-		this.findById(id); // check if the id exists
+		this.findById(id); // check si l'id existe
 		this.seanceRepository.deleteById(id);
 	}
 
-	// Ajoute un client à une séance
+	/**
+	 * Ajoute un client à une séance
+	 * @param sId l'id de la séance
+	 * @param cId l'id du client à ajouter
+	 * @return la séance mise à jour
+	 */
 	@Override
 	public Seance addClient(String sId, String cId) {
 		Seance s = this.findById(sId);
 		Client c = this.clientService.findById(cId);
 		
+		// Check si le client est déjà inscrit à la séance
+		List<Assister> clients = s.getClients();
+		Assister a = new Assister();
+		for (Assister a2 : clients) {
+			if (a2.getClient().getId().equals(cId))
+				a = a2;
+		}
+		if (s.getClients().contains(a))
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le client " + cId + " est déjà inscrit à la séance " + sId);
+		
+		// Check si le client a l'âge limite pour accéder à la séance
 		int ageLimite = s.getFilm().getAgeLimite();
 		int age = this.clientService.getAge(c);
-		
 		if (age < ageLimite)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le client " + cId + " (" + age + " ans) n'a pas l'âge minimum requis de " + ageLimite); 
 		
-		s.getClients().add(new Assister(this.calculerPrix(sId, cId), c));
-		
+		a.setPrix(this.calculerPrix(sId, cId));
+		a.setClient(c);
+		s.getClients().add(this.assisterService.save(a));
+
 		return this.update(s);
 	}
 
+	/**
+	 * Cherche les séances par film
+	 * @param f le film par lequel rechercher les séances
+	 * @return les séances qui comportent ce film
+	 */
 	@Override
 	public List<Seance> findAllByFilm(Film f) {
 		return this.seanceRepository.findAllByFilm(f);
 	}
 
-	// Calcule et retourne la recette d'une séance
+	/**
+	 * Calcule la recette d'une séance
+	 * @param id l'id de la séance
+	 * @return la recette de la séance
+	 */
 	@Override
 	public float getRecette(String id) {
 		float prix = 0f;
@@ -98,23 +145,53 @@ public class SeanceServiceImpl implements SeanceService {
 		return prix;
 	}
 
-	// Récupère le nombre de places restantes pour une séance
+	/**
+	 * Calcule le nombre de places restantes pour une séance
+	 * @param id l'id de la séance
+	 * @return le nombre de places restantes
+	 */
 	@Override
 	public int getPlacesRestantes(String id) {
 		Optional<Seance> optS = this.seanceRepository.findById(id);
-		if (optS.get().getSalle() == null)
-			throw new NullValueException(HttpStatus.NO_CONTENT, "Aucune salle n'a été trouvée dans la séance " + id);
 		int totalPlaces = optS.get().getSalle().getPlace();
 		int placesTaken = optS.get().getClients().size();
 		
 		return totalPlaces - placesTaken;
 	}
 	
+	/**
+	 * Cherche les séances dans une plage horaire
+	 * @param min première date de la plage horaire
+	 * @param max deuxième date (doit être postérieure à la première)
+	 * @return les séances comprises dans la plage horaire sélectionnée
+	 */
 	@Override
-	public List<Seance> findSeanceByDateBetween(LocalDateTime min, LocalDateTime max) {
-		return this.seanceRepository.findSeanceByDateBetween(min, max);
+	public List<Seance> findSeanceByDateBetween(String min, String max) {
+		// Format de la date qui doit être entrée en paramètre :
+		DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+		
+		// Check si la date est au bon format et renvoie une exception si ce n'est pas le cas
+		LocalDateTime minDate = null;
+		LocalDateTime maxDate = null;
+		try {
+			minDate = LocalDateTime.parse(min, dateTimeFormat);
+			maxDate = LocalDateTime.parse(max, dateTimeFormat);
+		} catch (RuntimeException e) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "La date doit être au format 'yyyy-MM-dd-HH:mm'");
+		}
+		
+		// Check si la deuxième date est bien postérieure à la première
+		if (maxDate.isBefore(minDate))
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le deuxième horaire doit être postérieur au premier horaire");
+		
+		return this.seanceRepository.findSeanceByDateBetween(minDate, maxDate);
 	}
 
+	/**
+	 * Cherche les séances par titre de film
+	 * @param titre le titre du film à rechercher
+	 * @return les séances qui comportent ce film
+	 */
 	@Override
 	public List<Seance> findSeanceByFilmTitre(String titre) {
 		return this.seanceRepository.findSeanceByFilmTitre(titre);
@@ -130,14 +207,14 @@ public class SeanceServiceImpl implements SeanceService {
 		seance 4DX: + 8 euros
 	 * @param sId id de la séance
 	 * @param aId id du client
-	 * @return le prix de la séance
+	 * @return le prix de la séance pour le client
 	 */
 	public float calculerPrix(String sId, String cId) {
 		float prix = 10; // prix de base: 10 euros
 		Seance s = this.findById(sId);
 		Client c = this.clientService.findById(cId);
-		s.getClients();
 		
+		// Ajoute le surplus selon le type de la séance
 		switch (s.getType()) {
 		case "3D": // seance 3D: +3 euros
 			prix += 3; 
@@ -151,27 +228,27 @@ public class SeanceServiceImpl implements SeanceService {
 			prix += 8; 
 			break;
 			
-		default:
-			// TODO Exception
-			System.out.println("Erreur de type");
+		default: // séance 2D: valeur par défaut
 			break;
 		}
 		
+		// Applique la remise enfant (-10 ans): -4 euros
 		int age = this.clientService.getAge(c);
-		if (age < 10) // remise enfant (-10 ans): -4 euros
+		if (age < 10) 
 			prix -= 4;
 			
-		if (c.isEtudiant())	// remise etudiant : -2 euros
+		// Applique la remise etudiant : -2 euros
+		if (c.isEtudiant())	
 			prix -= 2;
 		
 		return prix;
 	}
 
-	@Override
-	public List<Seance> findSeanceByFilmGenre(String genre) {
-		return this.seanceRepository.findSeanceByFilmGenre(genre);
-	}
-
+	/**
+	 * Cherche les séances par type
+	 * @param type le type de séance à rechercher
+	 * @return les séances qui correspondent au type sélectionné
+	 */
 	@Override
 	public List<Seance> findSeanceByType(String type) {
 		return this.seanceRepository.findSeanceByType(type);

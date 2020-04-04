@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.aston.exceptions.NotFoundException;
 import com.aston.models.Client;
@@ -20,6 +22,16 @@ public class ClientServiceImpl implements ClientService {
 	
 	@Override
 	public Client save(Client c) {
+		// Check si les champs requis sont null
+		if (c.getNom() == null || c.getNom().equals(""))
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci de remplir le champ nom");
+		if (c.getNaissance() == null)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci d'indiquer une date de naissance");
+	
+		// Check si la date de naissance est bien antérieure à la date du jour
+		if (c.getNaissance().isAfter(LocalDate.now()))
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "La date de naissance doit être antérieure à la date du jour");
+		
 		return this.clientRepository.save(c);
 	}
 
@@ -33,6 +45,7 @@ public class ClientServiceImpl implements ClientService {
 		Optional<Client> c = this.clientRepository.findById(id);
 		if (!c.isPresent())
 			throw new NotFoundException(id, Client.class.getSimpleName());
+		
 		return c.get();
 	}
 
@@ -47,7 +60,11 @@ public class ClientServiceImpl implements ClientService {
 		this.clientRepository.deleteById(id);
 	}
 	
-	// Calcule et retourne l'age d'un client
+	/**
+	 * Calcule l'âge d'un client
+	 * @param c le client dont on veut calculer l'âge
+	 * @return l'âge du client
+	 */
 	@Override
 	public int getAge(Client c) {
 		int age = 0;

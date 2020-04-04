@@ -31,6 +31,7 @@ public class AssisterServiceImpl implements AssisterService {
 		Optional<Assister> a = this.assisterRepository.findById(id);
 		if (!a.isPresent())
 			throw new NotFoundException(id, Assister.class.getSimpleName());
+		
 		return a.get();
 	}
 

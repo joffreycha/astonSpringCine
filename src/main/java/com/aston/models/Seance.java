@@ -20,8 +20,8 @@ public class Seance {
 
 	@Id	private String id;
 	@DBRef	private Film film;
-	private LocalDateTime date;
+	private LocalDateTime date = LocalDateTime.now();
 	private List<Assister> clients = new ArrayList<Assister>(); 
 	@DBRef	private Salle salle;
-	private String type;
+	private String type = "2D";
 }

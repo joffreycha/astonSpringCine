@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.aston.exceptions.NotFoundException;
 import com.aston.models.Salle;
@@ -18,6 +20,12 @@ public class SalleServiceImpl implements SalleService {
 
 	@Override
 	public Salle save(Salle s) {
+		// Check si les champs requis sont null
+		if (s.getNom() == null || s.getNom().equals(""))
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci d'indiquer un nom pour la salle");
+		if (s.getPlace() < 0)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "La salle doit comporter au moins 1 place");
+
 		return this.salleRepository.save(s);
 	}
 

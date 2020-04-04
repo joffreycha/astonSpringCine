@@ -6,10 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.aston.dto.CinemaDTO;
 import com.aston.exceptions.NotFoundException;
-import com.aston.exceptions.NullValueException;
 import com.aston.models.Cinema;
 import com.aston.models.Salle;
 import com.aston.repositories.CinemaRepository;
@@ -24,14 +24,22 @@ public class CinemaServiceImpl implements CinemaService {
 	
 	@Override
 	public CinemaDTO save(CinemaDTO cDto) {
-		// TODO Exception
 		Cinema c = cDto.getCinema();
 		if (c == null) {
-			throw new NullValueException(HttpStatus.BAD_REQUEST, "Le cinema n'a pas été rempli correctement");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le cinema ne peut pas être null");
 		}
+		
+		// Check si le nom du cinéma n'est pas pas null
+		if (c.getNom() == null || c.getNom().equals(""))
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le cinéma doit avoir un nom");
 
 		this.cinemaRepository.save(c);
 		
+		
+		// Check s'il y a au moins une salle enregistrée
+		if (cDto.getSalles().size() == 0)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le cinéma doit comporter au moins une salle");
+			
 		for (Salle s : cDto.getSalles()) {
 			s.setCinema(c);
 			s.setId(this.salleService.save(s).getId());
@@ -49,6 +57,7 @@ public class CinemaServiceImpl implements CinemaService {
 		Optional<Cinema> c = this.cinemaRepository.findById(id);
 		if (!c.isPresent())
 			throw new NotFoundException(id, Cinema.class.getSimpleName());
+		
 		return c.get();
 	}
 

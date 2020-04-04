@@ -1,6 +1,5 @@
 package com.aston.controllers;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,45 +54,64 @@ public class SeanceController {
 		return this.seanceService.findById(id);
 	}
 	
-	// Récupère la recette d'une seance par son id
+	/**
+	 * Récupère la recette d'une seance par son id
+	 * @param id l'id de la séance
+	 * @return la recette de la séance
+	 */
 	@GetMapping("{id}/recette")
 	public float getRecette(@PathVariable String id) {
 		return this.seanceService.getRecette(id);
 	}
 
-	// Récupère le nombre de places restantes pour une séance
+	/**
+	 * Récupère le nombre de places restantes pour une séance
+	 * @param id l'id de la séance
+	 * @return le nombre de places restantes
+	 */
 	@GetMapping("{id}/places")
 	public int getPlaces(@PathVariable String id) {
 		return this.seanceService.getPlacesRestantes(id);
 	}
 	
-	@GetMapping("{id}/horaire/{min}/{max}")
-	public List<Seance> findSeanceByDateBetween(@PathVariable LocalDateTime min, @PathVariable LocalDateTime max) {
+	/**
+	 * Cherche les séances dans une plage horaire
+	 * @param min première date de la plage horaire
+	 * @param max deuxième date (doit être postérieure à la première)
+	 * @return les séances comprises dans la plage horaire sélectionnée
+	 */
+	@GetMapping("horaire/{min}/{max}")
+	public List<Seance> findSeanceByDateBetween(@PathVariable String min, @PathVariable String max) {
 		return this.seanceService.findSeanceByDateBetween(min, max);
 	}
 	
-	@GetMapping("{id}/film/{nom}")
+	/**
+	 * Cherche les séances par titre de film
+	 * @param titre le titre du film à rechercher
+	 * @return les séances qui comportent ce film
+	 */
+	@GetMapping("film/{nom}")
 	public List<Seance> findSeanceByFilmTitre(@PathVariable String titre) {
 		return this.seanceService.findSeanceByFilmTitre(titre);
 	}
 	
 	/**
-	 * Ajoute un client (Assister) à une séance
-	 * @param sId id de la séance
-	 * @param cId id du client à ajouter
+	 * Ajoute un client à une séance
+	 * @param sId l'id de la séance
+	 * @param cId l'id du client à ajouter
+	 * @return la séance mise à jour
 	 */
 	@PostMapping("{sId}/assister/{cId}")
 	public void addClient(@PathVariable String sId, @PathVariable String cId) {
 		this.seanceService.addClient(sId, cId);
 	}
 	
-
-	@GetMapping("film/{genre}")
-	public List<Seance> findSeanceByFilmGenre(@PathVariable String genre) {
-		return this.seanceService.findSeanceByFilmGenre(genre);
-	}
-	
-	@GetMapping("{type}")
+	/**
+	 * Cherche les séances par type (2D, 3D, IMAX, 4DX) 
+	 * @param type le type de séance à rechercher
+	 * @return les séances qui correspondent au type sélectionné
+	 */
+	@GetMapping("type/{type}")
 	public List<Seance> findSeanceByType(@PathVariable String type) {
 		return this.seanceService.findSeanceByType(type);
 	}

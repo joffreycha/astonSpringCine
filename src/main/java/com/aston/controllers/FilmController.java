@@ -56,7 +56,7 @@ public class FilmController {
 	/**
 	 * Récupère la recette d'un film par son id
 	 * @param id id du film
-	 * @return le montant de la recette en float
+	 * @return le montant de la recette
 	 */
 	@GetMapping("{id}/recette")
 	public float getRecette(@PathVariable String id) {

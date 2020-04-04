@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.aston.exceptions.NotFoundException;
 import com.aston.models.Assister;
@@ -22,6 +24,14 @@ public class FilmServiceImpl implements FilmService {
 	
 	@Override
 	public Film save(Film f) {
+		// Check si les champs requis ne sont pas null
+		if (f.getTitre() == null || f.getTitre().equals(""))
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci d'indiquer un titre pour le film");
+		if (f.getGenre() == null || f.getGenre().equals(""))
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci de sélectionner un genre pour le film");
+		if (f.getVisa() == null || f.getVisa().equals(""))
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci d'indiquer un visa pour le film");
+			
 		return this.filmRepository.save(f);
 	}
 
@@ -35,6 +45,7 @@ public class FilmServiceImpl implements FilmService {
 		Optional<Film> f  = this.filmRepository.findById(id);
 		if (!f.isPresent())
 			throw new NotFoundException(id, Film.class.getSimpleName());
+		
 		return f.get();
 	}
 
@@ -49,12 +60,16 @@ public class FilmServiceImpl implements FilmService {
 		this.filmRepository.deleteById(id);
 	}
 	
-	// Calcule et retourne la recette d'un film
+	/**
+	 * Calcule la recette d'un film toutes séances confondues
+	 * @param id id du film
+	 * @return le montant de la recette
+	 */
 	@Override
 	public float getRecette(String id) {
-		
 		float prix = 0;
 		Film f = this.findById(id);
+		
 		List<Seance> seances = this.seanceService.findAllByFilm(f);
 		for (Seance s: seances) {
 			List<Assister> clients = s.getClients();
