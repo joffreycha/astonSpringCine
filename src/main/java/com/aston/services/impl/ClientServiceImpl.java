@@ -24,9 +24,9 @@ public class ClientServiceImpl implements ClientService {
 	public Client save(Client c) {
 		// Check si les champs requis sont null
 		if (c.getNom() == null || c.getNom().equals(""))
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci de remplir le champ nom");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Veuillez indiquer un nom pour le client");
 		if (c.getNaissance() == null)
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci d'indiquer une date de naissance");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Veuillez indiquer une date de naissance pour le client");
 	
 		// Check si la date de naissance est bien antérieure à la date du jour
 		if (c.getNaissance().isAfter(LocalDate.now()))

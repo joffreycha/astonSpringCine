@@ -26,18 +26,18 @@ public class CinemaServiceImpl implements CinemaService {
 	public CinemaDTO save(CinemaDTO cDto) {
 		Cinema c = cDto.getCinema();
 		if (c == null) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le cinema ne peut pas être null");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le champ cinema ne peut pas être null");
 		}
 		
 		// Check si le nom du cinéma n'est pas pas null
 		if (c.getNom() == null || c.getNom().equals(""))
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le cinéma doit avoir un nom");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Veuillez indiquer un nom pour le cinéma");
 
 		this.cinemaRepository.save(c);
 		
 		
 		// Check s'il y a au moins une salle enregistrée
-		if (cDto.getSalles().size() == 0)
+		if (cDto.getSalles().isEmpty())
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Le cinéma doit comporter au moins une salle");
 			
 		for (Salle s : cDto.getSalles()) {

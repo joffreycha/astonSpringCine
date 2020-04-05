@@ -22,8 +22,8 @@ public class SalleServiceImpl implements SalleService {
 	public Salle save(Salle s) {
 		// Check si les champs requis sont null
 		if (s.getNom() == null || s.getNom().equals(""))
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci d'indiquer un nom pour la salle");
-		if (s.getPlace() < 0)
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Veuillez indiquer un nom pour la salle");
+		if (s.getPlace() <= 0)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "La salle doit comporter au moins 1 place");
 
 		return this.salleRepository.save(s);

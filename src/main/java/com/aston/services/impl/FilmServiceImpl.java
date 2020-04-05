@@ -26,11 +26,11 @@ public class FilmServiceImpl implements FilmService {
 	public Film save(Film f) {
 		// Check si les champs requis ne sont pas null
 		if (f.getTitre() == null || f.getTitre().equals(""))
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci d'indiquer un titre pour le film");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Veuillez indiquer un titre pour le film");
 		if (f.getGenre() == null || f.getGenre().equals(""))
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci de sélectionner un genre pour le film");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Veuillez sélectionner un genre pour le film");
 		if (f.getVisa() == null || f.getVisa().equals(""))
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Merci d'indiquer un visa pour le film");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Veuillez indiquer un visa pour le film");
 			
 		return this.filmRepository.save(f);
 	}
